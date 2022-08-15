@@ -2,6 +2,7 @@
 package calculadora2;
 
 import java.util.regex.*;//import para uso do regex
+import java.text.*;
 
 public class CalcInterface extends javax.swing.JFrame {
 
@@ -230,9 +231,9 @@ public class CalcInterface extends javax.swing.JFrame {
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -395,7 +396,7 @@ public class CalcInterface extends javax.swing.JFrame {
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         // TODO add your handling code here:
         String texto = jTextField1.getText();
-        jTextField1.setText(texto + "-");
+        jTextField1.setText(texto );
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
@@ -409,13 +410,14 @@ public class CalcInterface extends javax.swing.JFrame {
         
         String conta = jTextField1.getText();
         String calculo;
+        double resultado;
         
-        Pattern primeiro_regex = Pattern.compile("^\\d*");//regex para pegar o primeiro número
+        Pattern primeiro_regex = Pattern.compile("^\\d+(?:\\.\\d+){0,1}");//regex para pegar o primeiro número
         Pattern operador_regex = Pattern.compile(".(?=\\d+$)");//regex para operador
-        Pattern segundo_regex = Pattern.compile("\\d+$");//regex para segundo número
+        Pattern segundo_regex = Pattern.compile("\\d+(?:\\.\\d+){0,1}$");//regex para segundo número
         Matcher matcher_primeiro_regex = primeiro_regex.matcher(conta);
         matcher_primeiro_regex.find();//dando match no primeiro número
-        int primeiro =Integer.parseInt(conta.substring(matcher_primeiro_regex.start(), matcher_primeiro_regex.end()));
+        double primeiro =Double.parseDouble(conta.substring(matcher_primeiro_regex.start(), matcher_primeiro_regex.end()));
         
         Matcher matcher_operador_regex = operador_regex.matcher(conta);
         matcher_operador_regex.find();//dando match no operador
@@ -423,25 +425,27 @@ public class CalcInterface extends javax.swing.JFrame {
         
         Matcher matcher_segundo_regex = segundo_regex.matcher(conta);
         matcher_segundo_regex.find();//dando match no segundo número
-        int segundo =Integer.parseInt(conta.substring(matcher_segundo_regex.start(), matcher_segundo_regex.end()));
+        double segundo =Double.parseDouble(conta.substring(matcher_segundo_regex.start(), matcher_segundo_regex.end()));
         
         switch(operador){
             default:
-                calculo="";
+                resultado=0;
             case "+":
-                calculo=Integer.toString(primeiro+segundo);
+                resultado=(primeiro+segundo);
             break;
             case "-":
-                calculo=Integer.toString(primeiro-segundo);
+                resultado=(primeiro-segundo);
             break;
             case "*":
-                calculo=Integer.toString(primeiro*segundo);
+                resultado=(primeiro*segundo);
             break;
             case "/":
-                calculo=Integer.toString(primeiro/segundo);
+                resultado=(primeiro/segundo);
             break;
             
         }
+        DecimalFormat format = new DecimalFormat("0.#");
+        calculo=format.format(resultado);
         jTextField1.setText(calculo);
         
         
