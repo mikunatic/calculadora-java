@@ -318,7 +318,15 @@ public class CalcInterface extends javax.swing.JFrame {
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         // TODO add your handling code here:
         String texto = jTextField1.getText();
-        jTextField1.setText(texto + "*");
+        String ultimoDigito="";
+        if (texto.length()!=0) {
+            ultimoDigito=texto.substring(texto.length()-1,texto.length());
+            if (ultimoDigito.equals("+") || ultimoDigito.equals("/") || ultimoDigito.equals("*")) {
+                jTextField1.setText(texto.substring(0,texto.length()-1)+"*");
+         }else{
+              jTextField1.setText(texto + "*");
+           }
+        }
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
@@ -335,8 +343,7 @@ public class CalcInterface extends javax.swing.JFrame {
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
         // TODO add your handling code here:
         String texto = jTextField1.getText();
-        jTextField1.setText(texto.replaceAll(".$",""));//".$" pega o último caracter, replaceAll substitui
-
+        jTextField1.setText(texto.substring(0,texto.length()-1));
     }//GEN-LAST:event_jButton17ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -390,19 +397,70 @@ public class CalcInterface extends javax.swing.JFrame {
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         // TODO add your handling code here:
         String texto = jTextField1.getText();
-        jTextField1.setText(texto + "/");
+        String ultimoDigito="";
+        if (texto.length()!=0) {
+           ultimoDigito=texto.substring(texto.length()-1,texto.length());
+           if (ultimoDigito.equals("+") || ultimoDigito.equals("/") || ultimoDigito.equals("*")|| ultimoDigito.equals("-")) {
+               jTextField1.setText(texto.substring(0,texto.length()-1)+"/");
+           }else{
+                jTextField1.setText(texto + "/");
+           }
+        }
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         // TODO add your handling code here:
         String texto = jTextField1.getText();
-        jTextField1.setText(texto );
+        String ultimoDigito="";
+        String penultimoDigito="";
+        jTextField1.setText(texto);
+        if (texto.equals("")) {//se tiver vazio digita "-"
+            jTextField1.setText("-");
+        } else{
+            ultimoDigito=texto.substring(texto.length()-1,texto.length());//se não ele pega o último digito
+        }   
+        if (ultimoDigito.equals("-")) {
+            if (texto.length()>1) {
+                penultimoDigito=texto.substring(texto.length()-2,texto.length()-1);//pega o penultimo digito
+                if (penultimoDigito.equals("-")) {
+                    
+                }else{
+                    jTextField1.setText(texto+"-");
+                }
+            }
+        }
+        
+        else if(ultimoDigito.equals("/") || ultimoDigito.equals("*") || ultimoDigito.equals("+")) {
+            jTextField1.setText(texto.substring(0,texto.length()-1)+"-");
+        }else{
+            jTextField1.setText(texto+"-");
+        }
+        
+        
+        
+       // if (texto.length()!=0) {//se não tiver nada no visor
+         //  ultimoDigito=texto.substring(texto.length()-1,texto.length());//ultimoDigito vai receber o valor do ultimo digito escrito
+           //if (ultimoDigito.equals("+") || ultimoDigito.equals("/") || ultimoDigito.equals("*")) {//se ultimo digitor for igual a + * / então
+             //  jTextField1.setText(texto.substring(0,texto.length()-1)+"-");//substituir por -
+           //}else{//senão só escrever -
+             //   jTextField1.setText(texto + "-");
+           //}
+        //}
+        
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
         // TODO add your handling code here:
         String texto = jTextField1.getText();
-        jTextField1.setText(texto + "+");
+        String ultimoDigito="";
+        if (texto.length()!=0) {
+            ultimoDigito=texto.substring(texto.length()-1,texto.length());
+            if (ultimoDigito.equals("+") || ultimoDigito.equals("/") || ultimoDigito.equals("*")||ultimoDigito.equals("-")) {
+                jTextField1.setText(texto.substring(0,texto.length()-1)+"+");
+            }else{
+               jTextField1.setText(texto + "+");
+           }
+        }
     }//GEN-LAST:event_jButton15ActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
@@ -412,7 +470,7 @@ public class CalcInterface extends javax.swing.JFrame {
         String calculo;
         double resultado;
         
-        Pattern primeiro_regex = Pattern.compile("^\\d+(?:\\.\\d+){0,1}");//regex para pegar o primeiro número
+        Pattern primeiro_regex = Pattern.compile("^-?\\d+(?:\\.\\d+){0,1}");//regex para pegar o primeiro número
         Pattern operador_regex = Pattern.compile(".(?=\\d+$)");//regex para operador
         Pattern segundo_regex = Pattern.compile("\\d+(?:\\.\\d+){0,1}$");//regex para segundo número
         Matcher matcher_primeiro_regex = primeiro_regex.matcher(conta);
@@ -444,7 +502,9 @@ public class CalcInterface extends javax.swing.JFrame {
             break;
             
         }
-        DecimalFormat format = new DecimalFormat("0.#");
+        
+        
+        DecimalFormat format = new DecimalFormat("0.#");//se o resultado decimal terminar com 0, não mostra
         calculo=format.format(resultado);
         jTextField1.setText(calculo);
         
